@@ -1,8 +1,10 @@
 package com.avvsoft2050.dao;
 
+import com.avvsoft2050.model.Group;
+
 import java.util.List;
 
-public interface Group {
+public interface GroupDao {
     void addGroup(Group group);
     void deleteGroup(int groupId);
     void updateGroup(Group group);
