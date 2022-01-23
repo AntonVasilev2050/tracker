@@ -2,24 +2,23 @@ package com.avvsoft2050.model;
 
 
 import javax.persistence.*;
-import java.util.Date;
 
 @Entity
 @Table(name = "messages")
 public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "message_id")
-    private int messageID;
+    @Column(name = "id")
+    private int messageId;
 
     @Column(name = "date_time")
-    private Date dateTime;
+    private long dateTime;
 
     @Column(name = "message")
     private String message;
 
-    @Column(name = "person_id")
-    private int person_id;
+//    @Column(name = "person_id")
+//    private int personId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "person_id")
@@ -28,26 +27,26 @@ public class Message {
     public Message() {
     }
 
-    public Message(int messageID, Date dateTime, String message, int person_id) {
-        this.messageID = messageID;
+    public Message(int messageID, long dateTime, String message) {
+        this.messageId = messageID;
         this.dateTime = dateTime;
         this.message = message;
-        this.person_id = person_id;
+//        this.personId = personId;
     }
 
-    public int getMessageID() {
-        return messageID;
+    public int getMessageId() {
+        return messageId;
     }
 
-    public void setMessageID(int messageID) {
-        this.messageID = messageID;
+    public void setMessageId(int messageID) {
+        this.messageId = messageID;
     }
 
-    public Date getDateTime() {
+    public long getDateTime() {
         return dateTime;
     }
 
-    public void setDateTime(Date dateTime) {
+    public void setDateTime(long dateTime) {
         this.dateTime = dateTime;
     }
 
@@ -59,13 +58,13 @@ public class Message {
         this.message = message;
     }
 
-    public int getPerson_id() {
-        return person_id;
-    }
-
-    public void setPerson_id(int person_id) {
-        this.person_id = person_id;
-    }
+//    public int getPersonId() {
+//        return personId;
+//    }
+//
+//    public void setPersonId(int person_id) {
+//        this.personId = person_id;
+//    }
 
     public Person getPerson() {
         return person;
@@ -78,10 +77,10 @@ public class Message {
     @Override
     public String toString() {
         return "Message{" +
-                "messageID=" + messageID +
+                "messageId=" + messageId +
                 ", dateTime=" + dateTime +
                 ", message='" + message + '\'' +
-                ", person_id=" + person_id +
+                ", person=" + person +
                 '}';
     }
 }

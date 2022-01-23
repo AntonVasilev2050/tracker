@@ -10,5 +10,5 @@ public interface MessageDao {
     void deleteMessage(int messageId);
     void updateMessage(Message message);
     List<Message> getAllMessages();
-    Person getMessageById(int messageId);
+    Message getMessageById(int messageId);
 }

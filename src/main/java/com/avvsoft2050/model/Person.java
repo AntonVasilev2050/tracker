@@ -10,7 +10,7 @@ import java.util.List;
 public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "person_id")
+    @Column(name = "id")
     private int personId;
 
     @Column(name = "telegram_login")
@@ -25,20 +25,20 @@ public class Person {
     @Column(name = "city")
     private String city;
 
-    @Column(name = "rlole_id")
-    private String roleId;
+    @Column(name = "role_id")
+    private int roleId;
 
     @Column(name = "group_id")
-    private String groupId;
+    private int groupId;
 
-    @OneToMany(mappedBy = "message", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "person", cascade = CascadeType.ALL)
     private List<Message> messages;
 
     public Person() {
     }
 
     public Person(int personId, String telegramLogin, String name, String surname,
-                  String city, String roleId, String groupId) {
+                  String city, int roleId, int groupId) {
         this.personId = personId;
         this.telegramLogin = telegramLogin;
         this.name = name;
@@ -89,19 +89,19 @@ public class Person {
         this.city = city;
     }
 
-    public String getRoleId() {
+    public int getRoleId() {
         return roleId;
     }
 
-    public void setRoleId(String roleId) {
+    public void setRoleId(int roleId) {
         this.roleId = roleId;
     }
 
-    public String getGroupId() {
+    public int getGroupId() {
         return groupId;
     }
 
-    public void setGroupId(String groupId) {
+    public void setGroupId(int groupId) {
         this.groupId = groupId;
     }
 

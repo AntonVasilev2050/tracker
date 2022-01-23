@@ -1,5 +1,7 @@
-package com.avvsoft2050;
+package com.avvsoft2050.service;
 
+import com.avvsoft2050.model.Message;
+import com.avvsoft2050.model.Person;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -9,6 +11,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -16,6 +19,16 @@ import java.util.Date;
 import java.util.List;
 
 public class RoboTrackerBot extends TelegramLongPollingBot {
+    RoboService roboService = new RoboService();
+    static String message_text;
+    static String chat_id;
+    static String name;
+    static String surname;
+    static String userName;
+    static int dateMSec;
+    SendMessage message = new SendMessage(); // Create a message object object
+    static boolean readyToGetMessage;
+
     @Override
     public String getBotUsername() {
         return "RoboTracker";
@@ -28,50 +41,63 @@ public class RoboTrackerBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        // We check if the update has a message and the message has text
+        checkMessage(update);
+        message.setChatId(chat_id);
+        message.setText("Привет " + name + "! Я RoboTracker. Выбирай команду ");
+        setWelcomeButtons(message);
+        try {
+            switch (message_text) {
+                case ("Администрирование"):
+                    message.setText(name + ", извини, опция в разработке");
+                    execute(message); // Sending our message object to user
+                    break;
+                case ("Передать трекинг"):
+                    message.setText("Напиши чем занимаешься сейчас ");
+                    hideWelcomeButtons(message);
+                    readyToGetMessage = true;
+                    execute(message);
+                    break;
+            }
+            if (!(message_text.equals("Передать трекинг") || message_text.equals("Администрирование"))
+                    && readyToGetMessage) {
+                checkMessage(update);
+                DateFormat simple = new SimpleDateFormat("dd MMM yyyy HH:mm Z");
+                Date resultDate = new Date((long)dateMSec * 1000);
+                System.out.println(name + "--" + userName);
+                System.out.println(simple.format(resultDate));
+                System.out.println(message_text);
+                message.setText("Дата и время: " + resultDate
+                        + "\n" + "Сообщение: " + "\n" + message_text
+                        + "\n" + "---------------" + "\n" + "Отправлено!");
+
+                int personIdFromDB = roboService.getPersonIdFromDB(userName);
+                if(personIdFromDB == 0){
+                    roboService.addPerson(new Person(1, userName, name, surname, "City", 1, 3));
+//                    Получаем ID присвоенный новому person
+                    personIdFromDB = roboService.getPersonIdFromDB(userName);
+                System.out.println("new personIdFromDB: " + personIdFromDB);
+                    roboService.addMessage(new Message(1, dateMSec, message_text));
+                }else {
+                    roboService.addMessage(new Message(1, dateMSec, message_text));
+                }
+                readyToGetMessage = false;
+                execute(message);
+            }
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private static void checkMessage(Update update) {
         if (update.hasMessage() && update.getMessage().hasText()) {
             // Set variables
-            String message_text = update.getMessage().getText();
-            String chat_id = String.valueOf(update.getMessage().getChatId());
-            String name = update.getMessage().getChat().getFirstName();
-            String userName = update.getMessage().getChat().getUserName();
-
-            SendMessage message = new SendMessage(); // Create a message object object
-//            message.enableMarkdown(false);
-            message.setChatId(chat_id);
-            message.setText("Привет " + name + "! Я RoboTracker.");
-            setWelcomeButtons(message);
-            try {
-                switch (message_text) {
-                    case ("Администрирование"):
-                        message.setText(name + ", извини, опция в разработке");
-                        execute(message); // Sending our message object to user
-                        break;
-                    case ("Передать трекинг"):
-                        message.setText("Напиши чем занимаешься сейчас ");
-                        hideWelcomeButtons(message);
-                        execute(message);
-                        break;
-                    default:
-                        long dateMSec = 1000 * (long)update.getMessage().getDate();
-//                        DateFormat simple = new SimpleDateFormat("dd MMM yyyy HH:mm:ss:SSS Z");
-                        DateFormat simple = new SimpleDateFormat("dd MMM yyyy HH:mm Z");
-                        Date resultDate = new Date(dateMSec);
-
-                        message_text = update.getMessage().getText();
-
-                        execute(message);
-                        System.out.println(name + "--" + userName);
-                        System.out.println(simple.format(resultDate));
-                        System.out.println(message_text);
-                        message.setText("Дата и время: " + resultDate
-                                + "\n" + "Сообщение: " + "\n" + message_text
-                                + "\n" + "---------------" + "\n" + "Отправлено!");
-                        execute(message);
-                }
-            } catch (TelegramApiException e) {
-                e.printStackTrace();
-            }
+            message_text = update.getMessage().getText();
+            chat_id = String.valueOf(update.getMessage().getChatId());
+            name = update.getMessage().getChat().getFirstName();
+            surname = update.getMessage().getChat().getLastName();
+            userName = update.getMessage().getChat().getUserName();
+            dateMSec = update.getMessage().getDate();
         }
     }
 

@@ -39,14 +39,20 @@ public class PersonDaoImpl implements PersonDao {
     @Override
     public List<Person> getAllPeople() {
         Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+        Transaction transaction = session.beginTransaction();
         List<Person> people = (List<Person>) session.createQuery("from Person").list(); //or getResultList ???
+        transaction.commit();
+        session.close();
         return people;
     }
 
     @Override
     public Person getPersonById(int personId) {
         Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+        Transaction transaction = session.beginTransaction();
         Person person = session.get(Person.class, personId);
-        return null;
+        transaction.commit();
+        session.close();
+        return person;
     }
 }

@@ -40,14 +40,20 @@ public class MessageDaoImpl implements MessageDao {
     @Override
     public List<Message> getAllMessages() {
         Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+        Transaction transaction = session.beginTransaction();
         List<Message> list = (List<Message>) session.createQuery("from Message").list();
+        transaction.commit();
+        session.close();
         return list;
     }
 
     @Override
-    public Person getMessageById(int messageId) {
+    public Message getMessageById(int messageId) {
         Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+        Transaction transaction = session.beginTransaction();
         Message message = session.get(Message.class, messageId);
-        return null;
+        transaction.commit();
+        session.close();
+        return message;
     }
 }
