@@ -83,8 +83,6 @@ public class RoboTrackerBot extends TelegramLongPollingBot {
                 person = roboService.getPersonById(personIdFromDB);
                 Message trackMessage = new Message(dateMSec, message_text);
                 trackMessage.setPerson(person);
-//                person.addMessage(trackMessage);
-//                roboService.addPerson(person);
                 roboService.addMessage(trackMessage);
                 readyToGetMessage = false;
             }

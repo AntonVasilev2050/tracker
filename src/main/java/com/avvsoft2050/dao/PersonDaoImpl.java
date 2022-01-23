@@ -4,6 +4,7 @@ import com.avvsoft2050.model.Person;
 import com.avvsoft2050.utils.HibernateSessionFactoryUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 import java.util.List;
 
@@ -55,4 +56,16 @@ public class PersonDaoImpl implements PersonDao {
         session.close();
         return person;
     }
+
+//    @Override
+//    public int getIdByUserName(String userName) {
+//        Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+//        Transaction transaction = session.beginTransaction();
+//        Query query = session.createQuery("from Person p where p.telegramLogin =: tlog");
+//        query.setParameter("tlog", userName);
+//        int id = query.executeUpdate();
+//        transaction.commit();
+//        session.close();
+//        return id;
+//    }
 }

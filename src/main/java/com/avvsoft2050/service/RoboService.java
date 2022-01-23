@@ -64,4 +64,8 @@ public class RoboService {
         }
         return personId;
     }
+
+//    public int getPersonIdFromDB(String telegramUserName){
+//        return personDao.getIdByUserName(telegramUserName);
+//    }
 }

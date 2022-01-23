@@ -10,4 +10,5 @@ public interface PersonDao {
     void updatePerson(Person person);
     List<Person> getAllPeople();
     Person getPersonById(int personId);
+//    int getIdByUserName(String userName);
 }

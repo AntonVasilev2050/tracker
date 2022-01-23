@@ -33,3 +33,11 @@ CREATE TABLE roles
     id   serial PRIMARY KEY,
     role varchar(20)
 );
+
+INSERT INTO roles VALUES (1, 'Student'),
+                         (2, 'Team Lead'),
+                         (3, 'Mentor');
+
+INSERT INTO groups VALUES (1, 'First', 'Red'),
+                         (2, 'Second', 'Blue'),
+                         (3, 'Third', 'Yellow');

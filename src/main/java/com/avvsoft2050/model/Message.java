@@ -36,10 +36,6 @@ public class Message {
         return messageId;
     }
 
-//    public void setMessageId(int messageID) {
-//        this.messageId = messageID;
-//    }
-
     public long getDateTime() {
         return dateTime;
     }
