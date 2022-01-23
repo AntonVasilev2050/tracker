@@ -31,15 +31,14 @@ public class Person {
     @Column(name = "group_id")
     private int groupId;
 
-    @OneToMany(mappedBy = "person", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "person", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Message> messages;
 
     public Person() {
     }
 
-    public Person(int personId, String telegramLogin, String name, String surname,
+    public Person(String telegramLogin, String name, String surname,
                   String city, int roleId, int groupId) {
-        this.personId = personId;
         this.telegramLogin = telegramLogin;
         this.name = name;
         this.surname = surname;
@@ -62,9 +61,9 @@ public class Person {
         return personId;
     }
 
-    public void setPersonId(int personId) {
-        this.personId = personId;
-    }
+//    public void setPersonId(int personId) {
+//        this.personId = personId;
+//    }
 
     public String getTelegramLogin() {
         return telegramLogin;

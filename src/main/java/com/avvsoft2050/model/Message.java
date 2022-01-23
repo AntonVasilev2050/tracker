@@ -15,7 +15,7 @@ public class Message {
     private long dateTime;
 
     @Column(name = "message")
-    private String message;
+    private String messageText;
 
 //    @Column(name = "person_id")
 //    private int personId;
@@ -27,20 +27,18 @@ public class Message {
     public Message() {
     }
 
-    public Message(int messageID, long dateTime, String message) {
-        this.messageId = messageID;
+    public Message(long dateTime, String message) {
         this.dateTime = dateTime;
-        this.message = message;
-//        this.personId = personId;
+        this.messageText = message;
     }
 
     public int getMessageId() {
         return messageId;
     }
 
-    public void setMessageId(int messageID) {
-        this.messageId = messageID;
-    }
+//    public void setMessageId(int messageID) {
+//        this.messageId = messageID;
+//    }
 
     public long getDateTime() {
         return dateTime;
@@ -50,12 +48,12 @@ public class Message {
         this.dateTime = dateTime;
     }
 
-    public String getMessage() {
-        return message;
+    public String getMessageText() {
+        return messageText;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setMessageText(String message) {
+        this.messageText = message;
     }
 
 //    public int getPersonId() {
@@ -79,7 +77,7 @@ public class Message {
         return "Message{" +
                 "messageId=" + messageId +
                 ", dateTime=" + dateTime +
-                ", message='" + message + '\'' +
+                ", message='" + messageText + '\'' +
                 ", person=" + person +
                 '}';
     }

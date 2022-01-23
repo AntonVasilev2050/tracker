@@ -70,20 +70,23 @@ public class RoboTrackerBot extends TelegramLongPollingBot {
                         + "\n" + "Сообщение: " + "\n" + message_text
                         + "\n" + "---------------" + "\n" + "Отправлено!");
 
+                execute(message);
                 int personIdFromDB = roboService.getPersonIdFromDB(userName);
-                Person person = new Person(personIdFromDB, userName, name, surname, "City", 1, 3);
+                Person person = new Person(userName, name, surname, "City", 1, 3);
+                System.out.println(person);
                 if (personIdFromDB == 0) {
                     roboService.addPerson(person);
-//                    Получаем ID присвоенный новому person
-                    personIdFromDB = roboService.getPersonIdFromDB(userName);
-                    System.out.println("new personIdFromDB: " + personIdFromDB);
+
                 }
-                Message trackMessage = new Message(1, dateMSec, message_text);
+                //                    Получаем ID присвоенный новому person
+                personIdFromDB = roboService.getPersonIdFromDB(userName);
+                person = roboService.getPersonById(personIdFromDB);
+                Message trackMessage = new Message(dateMSec, message_text);
                 trackMessage.setPerson(person);
-                person.addMessage(trackMessage);
-                roboService.updateMessage(trackMessage);
+//                person.addMessage(trackMessage);
+//                roboService.addPerson(person);
+                roboService.addMessage(trackMessage);
                 readyToGetMessage = false;
-                execute(message);
             }
         } catch (TelegramApiException e) {
             e.printStackTrace();
