@@ -49,6 +49,15 @@ public class Person {
         messages = new ArrayList<>();
     }
 
+    public void addMessage(Message message){
+        message.setPerson(this);
+        messages.add(message);
+    }
+
+    public void removeMessage(Message message){
+        messages.remove(message);
+    }
+
     public int getPersonId() {
         return personId;
     }

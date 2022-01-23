@@ -62,7 +62,7 @@ public class RoboTrackerBot extends TelegramLongPollingBot {
                     && readyToGetMessage) {
                 checkMessage(update);
                 DateFormat simple = new SimpleDateFormat("dd MMM yyyy HH:mm Z");
-                Date resultDate = new Date((long)dateMSec * 1000);
+                Date resultDate = new Date((long) dateMSec * 1000);
                 System.out.println(name + "--" + userName);
                 System.out.println(simple.format(resultDate));
                 System.out.println(message_text);
@@ -71,15 +71,17 @@ public class RoboTrackerBot extends TelegramLongPollingBot {
                         + "\n" + "---------------" + "\n" + "Отправлено!");
 
                 int personIdFromDB = roboService.getPersonIdFromDB(userName);
-                if(personIdFromDB == 0){
-                    roboService.addPerson(new Person(1, userName, name, surname, "City", 1, 3));
+                Person person = new Person(personIdFromDB, userName, name, surname, "City", 1, 3);
+                if (personIdFromDB == 0) {
+                    roboService.addPerson(person);
 //                    Получаем ID присвоенный новому person
                     personIdFromDB = roboService.getPersonIdFromDB(userName);
-                System.out.println("new personIdFromDB: " + personIdFromDB);
-                    roboService.addMessage(new Message(1, dateMSec, message_text));
-                }else {
-                    roboService.addMessage(new Message(1, dateMSec, message_text));
+                    System.out.println("new personIdFromDB: " + personIdFromDB);
                 }
+                Message trackMessage = new Message(1, dateMSec, message_text);
+                trackMessage.setPerson(person);
+                person.addMessage(trackMessage);
+                roboService.updateMessage(trackMessage);
                 readyToGetMessage = false;
                 execute(message);
             }
