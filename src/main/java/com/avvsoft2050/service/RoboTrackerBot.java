@@ -57,6 +57,22 @@ public class RoboTrackerBot extends TelegramLongPollingBot {
                     readyToGetMessage = true;
                     execute(message);
                     break;
+
+                case ("Посмотреть мои записи"):
+                    checkMessage(update);
+                    List<Message> messagesFromDB = roboService.getAllMessages();
+                    if (messagesFromDB.size() != 0) {
+                        System.out.println("records:  " + messagesFromDB.size());
+                        for (Message m : messagesFromDB) {
+                            String telegramLogin = m.getPerson().getTelegramLogin();
+                            if (telegramLogin.equals(userName)) {
+                                System.out.println(m.getDateTime());
+                                System.out.println(m.getMessageText());
+                                System.out.println("--------------------");
+                            }
+                        }
+                    }
+                    break;
             }
             if (!(message_text.equals("Передать трекинг") || message_text.equals("Администрирование"))
                     && readyToGetMessage) {
@@ -126,9 +142,15 @@ public class RoboTrackerBot extends TelegramLongPollingBot {
         // Добавляем кнопки во вторую строчку клавиатуры
         keyboardSecondRow.add(new KeyboardButton("Администрирование"));
 
+        // Третья строчка клавиатуры
+        KeyboardRow keyboardThirdRow = new KeyboardRow();
+        // Добавляем кнопки в третью строчку клавиатуры
+        keyboardThirdRow.add(new KeyboardButton("Посмотреть мои записи"));
+
         // Добавляем все строчки клавиатуры в список
         keyboard.add(keyboardFirstRow);
         keyboard.add(keyboardSecondRow);
+        keyboard.add(keyboardThirdRow);
         // и устанавливаем этот список нашей клавиатуре
         replyKeyboardMarkup.setKeyboard(keyboard);
     }

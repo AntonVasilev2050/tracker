@@ -4,11 +4,15 @@ import com.avvsoft2050.model.Message;
 import com.avvsoft2050.model.Person;
 import com.avvsoft2050.utils.HibernateSessionFactoryUtil;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
 
 import java.util.List;
 
 public class MessageDaoImpl implements MessageDao {
+//    private static final SessionFactory sessionFactory1 = new Configuration().configure().buildSessionFactory();
+
     @Override
     public void addMessage(Message message) {
         Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
@@ -41,7 +45,7 @@ public class MessageDaoImpl implements MessageDao {
     public List<Message> getAllMessages() {
         Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
-        List<Message> list = (List<Message>) session.createQuery("from Message").list();
+        List<Message> list =  session.createQuery("from Message", Message.class).getResultList();
         transaction.commit();
         session.close();
         return list;

@@ -36,10 +36,10 @@
             true
         </property>
 
-        <mapping class="com.avvsoft2050.model.Group"></mapping>
-        <mapping class="com.avvsoft2050.model.Message"></mapping>
-        <mapping class="com.avvsoft2050.model.Person"></mapping>
-        <mapping class="com.avvsoft2050.model.Role"></mapping>
+<!--        <mapping class="com.avvsoft2050.model.Group"></mapping>-->
+<!--        <mapping class="com.avvsoft2050.model.Message"></mapping>-->
+<!--        <mapping class="com.avvsoft2050.model.Person"></mapping>-->
+<!--        <mapping class="com.avvsoft2050.model.Role"></mapping>-->
 
 
         <!-- List of XML mapping files -->

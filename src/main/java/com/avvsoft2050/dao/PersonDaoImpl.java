@@ -21,6 +21,7 @@ public class PersonDaoImpl implements PersonDao {
     @Override
     public void deletePerson(int personId) {
         Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+
         Transaction transaction = session.beginTransaction();
         Person person = session.get(Person.class, personId);
         session.delete(person);
@@ -39,9 +40,10 @@ public class PersonDaoImpl implements PersonDao {
 
     @Override
     public List<Person> getAllPeople() {
-        Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+//        Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+        Session session = HibernateSessionFactoryUtil.getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
-        List<Person> people = (List<Person>) session.createQuery("from Person").list(); //or getResultList ???
+        List<Person> people = (List<Person>) session.createQuery("from Person").getResultList(); //or getResultList ???
         transaction.commit();
         session.close();
         return people;

@@ -1,7 +1,10 @@
 package com.avvsoft2050.service;
 
+import com.avvsoft2050.dao.GroupDaoImpl;
 import com.avvsoft2050.dao.MessageDaoImpl;
 import com.avvsoft2050.dao.PersonDaoImpl;
+import com.avvsoft2050.dao.RoleDaoImpl;
+import com.avvsoft2050.model.Group;
 import com.avvsoft2050.model.Message;
 import com.avvsoft2050.model.Person;
 
@@ -10,6 +13,8 @@ import java.util.List;
 public class RoboService {
     private MessageDaoImpl messageDao = new MessageDaoImpl();
     private PersonDaoImpl personDao = new PersonDaoImpl();
+    private GroupDaoImpl groupDao = new GroupDaoImpl();
+    private RoleDaoImpl roleDao = new RoleDaoImpl();
 
     public RoboService(){
     }
