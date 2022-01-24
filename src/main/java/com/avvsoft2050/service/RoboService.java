@@ -70,7 +70,7 @@ public class RoboService {
         return personId;
     }
 
-//    public int getPersonIdFromDB(String telegramUserName){
-//        return personDao.getIdByUserName(telegramUserName);
-//    }
+    public void addMessageToPerson(Message message, Person person){
+        personDao.addMessageToPerson(message, person);
+    }
 }

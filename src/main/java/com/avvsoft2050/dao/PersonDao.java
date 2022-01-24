@@ -1,5 +1,6 @@
 package com.avvsoft2050.dao;
 
+import com.avvsoft2050.model.Message;
 import com.avvsoft2050.model.Person;
 
 import java.util.List;
@@ -10,5 +11,5 @@ public interface PersonDao {
     void updatePerson(Person person);
     List<Person> getAllPeople();
     Person getPersonById(int personId);
-//    int getIdByUserName(String userName);
+    void addMessageToPerson(Message message, Person person);
 }

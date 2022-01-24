@@ -20,7 +20,11 @@ public class Message {
 //    @Column(name = "person_id")
 //    private int personId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {
+            CascadeType.PERSIST,
+            CascadeType.DETACH,
+            CascadeType.REFRESH,
+            CascadeType.MERGE})
     @JoinColumn(name = "person_id")
     private Person person;
 

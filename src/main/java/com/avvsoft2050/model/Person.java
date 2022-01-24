@@ -45,12 +45,14 @@ public class Person {
         this.city = city;
         this.roleId = roleId;
         this.groupId = groupId;
-        messages = new ArrayList<>();
     }
 
-    public void addMessage(Message message){
-        message.setPerson(this);
+    public void addMessageToPerson(Message message){
+        if (messages == null){
+            messages = new ArrayList<>();
+        }
         messages.add(message);
+        message.setPerson(this);
     }
 
     public void removeMessage(Message message){

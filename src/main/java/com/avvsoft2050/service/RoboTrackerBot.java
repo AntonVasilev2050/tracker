@@ -50,6 +50,7 @@ public class RoboTrackerBot extends TelegramLongPollingBot {
                 case ("Администрирование"):
                     message.setText(name + ", извини, опция в разработке");
                     execute(message); // Sending our message object to user
+                    readyToGetMessage = false;
                     break;
                 case ("Передать трекинг"):
                     message.setText("Напиши чем занимаешься сейчас ");
@@ -61,28 +62,28 @@ public class RoboTrackerBot extends TelegramLongPollingBot {
                 case ("Посмотреть мои записи"):
                     checkMessage(update);
                     List<Message> messagesFromDB = roboService.getAllMessages();
-                    if (messagesFromDB.size() != 0) {
-                        System.out.println("records:  " + messagesFromDB.size());
-                        for (Message m : messagesFromDB) {
-                            String telegramLogin = m.getPerson().getTelegramLogin();
-                            if (telegramLogin.equals(userName)) {
-                                System.out.println(m.getDateTime());
-                                System.out.println(m.getMessageText());
-                                System.out.println("--------------------");
-                            }
+                    int youIdFromDb = roboService.getPersonIdFromDB(userName);
+                    for (Message m : messagesFromDB){
+                        if(m.getPerson().getPersonId() == youIdFromDb){
+                            DateFormat simple = new SimpleDateFormat("dd MMM yyyy HH:mm Z");
+                            Date resultDate = new Date((long) m.getDateTime() * 1000);
+                            message.setText("Дата и время: " + simple.format(resultDate)
+                                    + "\n" + "Сообщение: " + "\n" + m.getMessageText()
+                                    + "\n" + "---------------" + "\n");
+
+                            execute(message);
                         }
                     }
+                    readyToGetMessage = false;
                     break;
             }
-            if (!(message_text.equals("Передать трекинг") || message_text.equals("Администрирование"))
+            if (!(message_text.equals("Передать трекинг") || message_text.equals("Администрирование")
+                    || message_text.equals("Посмотреть мои записи"))
                     && readyToGetMessage) {
                 checkMessage(update);
                 DateFormat simple = new SimpleDateFormat("dd MMM yyyy HH:mm Z");
                 Date resultDate = new Date((long) dateMSec * 1000);
-                System.out.println(name + "--" + userName);
-                System.out.println(simple.format(resultDate));
-                System.out.println(message_text);
-                message.setText("Дата и время: " + resultDate
+                message.setText("Дата и время: " + simple.format(resultDate)
                         + "\n" + "Сообщение: " + "\n" + message_text
                         + "\n" + "---------------" + "\n" + "Отправлено!");
 
@@ -100,6 +101,7 @@ public class RoboTrackerBot extends TelegramLongPollingBot {
                 Message trackMessage = new Message(dateMSec, message_text);
                 trackMessage.setPerson(person);
                 roboService.addMessage(trackMessage);
+                roboService.addMessageToPerson(trackMessage, person);
                 readyToGetMessage = false;
             }
         } catch (TelegramApiException e) {
@@ -165,21 +167,6 @@ public class RoboTrackerBot extends TelegramLongPollingBot {
 
         // Создаем список строк клавиатуры
         List<KeyboardRow> keyboard = new ArrayList<>();
-
-//        // Первая строчка клавиатуры
-//        KeyboardRow keyboardFirstRow = new KeyboardRow();
-//        // Добавляем кнопки в первую строчку клавиатуры
-//        keyboardFirstRow.add(new KeyboardButton("Передать трекинг"));
-//
-//        // Вторая строчка клавиатуры
-//        KeyboardRow keyboardSecondRow = new KeyboardRow();
-//        // Добавляем кнопки во вторую строчку клавиатуры
-//        keyboardSecondRow.add(new KeyboardButton("Администрирование"));
-
-//        // Добавляем все строчки клавиатуры в список
-//        keyboard.add(keyboardFirstRow);
-//        keyboard.add(keyboardSecondRow);
-//        // и устанавливаем этот список нашей клавиатуре
         replyKeyboardMarkup.setKeyboard(keyboard);
     }
 
