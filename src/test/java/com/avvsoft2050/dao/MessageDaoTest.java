@@ -1,3 +1,5 @@
+package com.avvsoft2050.dao;
+
 import com.avvsoft2050.dao.MessageDaoImpl;
 import com.avvsoft2050.model.Message;
 import org.junit.jupiter.api.Test;
