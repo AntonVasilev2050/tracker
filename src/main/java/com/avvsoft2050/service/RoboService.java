@@ -4,7 +4,6 @@ import com.avvsoft2050.dao.GroupDaoImpl;
 import com.avvsoft2050.dao.MessageDaoImpl;
 import com.avvsoft2050.dao.PersonDaoImpl;
 import com.avvsoft2050.dao.RoleDaoImpl;
-import com.avvsoft2050.model.Group;
 import com.avvsoft2050.model.Message;
 import com.avvsoft2050.model.Person;
 
@@ -24,7 +23,7 @@ public class RoboService {
     }
 
     public void deleteMessage(int messageId) {
-        messageDao.deleteMessage(messageId);
+        messageDao.deleteMessageById(messageId);
     }
 
     public void updateMessage(Message message){

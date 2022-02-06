@@ -7,8 +7,10 @@ import java.util.List;
 
 public interface MessageDao {
     void addMessage(Message message);
-    void deleteMessage(int messageId);
+    void deleteMessageById(int messageId);
+    void deleteMessage(Message message);
     void updateMessage(Message message);
     List<Message> getAllMessages();
     Message getMessageById(int messageId);
+
 }

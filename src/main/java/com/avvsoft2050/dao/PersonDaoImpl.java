@@ -5,8 +5,10 @@ import com.avvsoft2050.model.Person;
 import com.avvsoft2050.utils.HibernateSessionFactoryUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.query.Query;
+import org.hibernate.criterion.CriteriaQuery;
+import org.hibernate.criterion.Order;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
 
 public class PersonDaoImpl implements PersonDao {
@@ -41,9 +43,10 @@ public class PersonDaoImpl implements PersonDao {
 
     @Override
     public List<Person> getAllPeople() {
-//        Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
-        Session session = HibernateSessionFactoryUtil.getSessionFactory().getCurrentSession();
+        Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
+//        List<Person> people = (List<Person>) session.createCriteria(Person.class)
+//                .addOrder(Order.desc("id")).list();
         List<Person> people = (List<Person>) session.createQuery("from Person").getResultList(); //or getResultList ???
         transaction.commit();
         session.close();

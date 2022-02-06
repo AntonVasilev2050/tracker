@@ -9,6 +9,7 @@ import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MessageDaoImpl implements MessageDao {
 //    private static final SessionFactory sessionFactory1 = new Configuration().configure().buildSessionFactory();
@@ -23,10 +24,19 @@ public class MessageDaoImpl implements MessageDao {
     }
 
     @Override
-    public void deleteMessage(int messageId) {
+    public void deleteMessageById(int messageId) {
         Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
         Message message = session.get(Message.class, messageId);
+        session.delete(message);
+        transaction.commit();
+        session.close();
+    }
+
+    @Override
+    public void deleteMessage(Message message) {
+        Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+        Transaction transaction = session.beginTransaction();
         session.delete(message);
         transaction.commit();
         session.close();
@@ -48,7 +58,9 @@ public class MessageDaoImpl implements MessageDao {
         List<Message> list =  session.createQuery("from Message", Message.class).getResultList();
         transaction.commit();
         session.close();
-        return list;
+
+        return list.stream().sorted((o1, o2) ->
+                (int) (o1.getDateTime() - o2.getDateTime())).collect(Collectors.toList());
     }
 
     @Override
