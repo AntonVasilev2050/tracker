@@ -1,12 +1,9 @@
 package com.avvsoft2050.dao;
 
 import com.avvsoft2050.model.Message;
-import com.avvsoft2050.model.Person;
 import com.avvsoft2050.utils.HibernateSessionFactoryUtil;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -55,12 +52,12 @@ public class MessageDaoImpl implements MessageDao {
     public List<Message> getAllMessages() {
         Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
-        List<Message> list =  session.createQuery("from Message", Message.class).getResultList();
+        List<Message> list = session.createQuery("from Message order by dateTime desc", Message.class).getResultList();
         transaction.commit();
         session.close();
-
-        return list.stream().sorted((o1, o2) ->
-                (int) (o1.getDateTime() - o2.getDateTime())).collect(Collectors.toList());
+//        return list.stream().sorted((o1, o2) ->
+//                (int) (o1.getDateTime() - o2.getDateTime())).collect(Collectors.toList());
+        return list;
     }
 
     @Override
